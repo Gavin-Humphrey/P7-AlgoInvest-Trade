@@ -1,5 +1,5 @@
 import csv
-from dataclasses import dataclass #
+from dataclasses import dataclass 
 from itertools import combinations
 import sys
 from prettytable import PrettyTable
