@@ -2,10 +2,13 @@ import csv
 from dataclasses import dataclass 
 from itertools import combinations
 import sys
+from tqdm import tqdm
+import time
 from prettytable import PrettyTable
 
 
 
+begin_time = time.time()
 
 def main():
     actions_list = get_actions_objects_from_csv("data/action.csv")
@@ -24,13 +27,14 @@ except IndexError:
 
 def get_actions_objects_from_csv(file_name: str):
     """Return a list of Action object from a csv file"""
-    actions = []
-    with open(file_name, newline="") as csv_File:
+    
+    with open(file_name, newline="") as csv_File: 
+        actions = []
         reader = csv.reader(csv_File, delimiter=",")
         for row in reader:
             actions.append((row[0], float(row[1]), float(row[2])))
 
-    return actions
+        return actions
 
 
 
@@ -41,10 +45,11 @@ def get_all_combi(actions):
     @param actions: list of all imported shares data
     @return: most profitable combination (list)
     """
+    actions.sort(key=lambda action: action[2], reverse=True)
     profit = 0
     best_combi = []
 
-    for i in range(len(actions)):
+    for i in tqdm(range(len(actions))):
         combis = combinations(actions, i+1)
 
         for combi in combis:
@@ -80,7 +85,7 @@ def compute_profit(combi):
     profits = []
     for el in combi:
         profits.append(el[1] * el[2] / 100)
-
+        
     return sum(profits)
 
 
@@ -92,6 +97,7 @@ def show_cost_profit(best_combi):
     print("Action # | Cost €| Profit %")
     print("__________________________")
 
+    
     for item in best_combi:
         print(f"{item[0]} | {item[1]} € | +{item[2]} %")
         # x = PrettyTable()
@@ -101,6 +107,7 @@ def show_cost_profit(best_combi):
 
     print("\nInvestment cost: ", compute_cost(best_combi), "€")
     print("Profit after 2 years: +",compute_profit(best_combi), "€")
+    print("\nTime taken :", time.time()- begin_time, "seconds")
     print("")
    
 
