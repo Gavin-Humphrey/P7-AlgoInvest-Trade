@@ -1,4 +1,3 @@
-from brute_force import compute_cost, compute_profit, get_actions_objects_from_csv
 import sys
 import csv
 from tqdm import tqdm
@@ -12,14 +11,17 @@ MAX_INVEST = 500
 
 def main():
 
-    #actions_list = get_actions_objects_from_csv("data/dataset1.csv")
-    filename = "data/dataset1.csv"#
+    filename = "data/dataset2.csv"#
     actions_list = read_csv(filename)
-    
+    print(f"\nComputing {len(actions_list)} shares for {MAX_INVEST}€ :")
+    show_cost_profit(knapSack(actions_list))
   
 
 def read_csv(filename):
-   
+    """Import shares data from csv file
+    check rows and filter out corrupted data 
+    Then return list of shares data 
+    """
     with open(filename) as csvfile:
         actions_file = csv.reader(csvfile, delimiter=',')
 
@@ -40,9 +42,15 @@ def read_csv(filename):
 
     
 def knapSack(actions_list):
+    """Sort the actions_list
+    Knapsack - Initialize the matrix  - dp
+    Retrieve the best combination of shares
+    actions_list - list of shares - as parameter
+    Returns the best possible combinations list
+    """
     actions_list.sort(key=lambda action: action[2], reverse=False)
     max_inv = MAX_INVEST * 100   
-    shares_total = len(actions_list)
+    total_action = len(actions_list)
     cost = []      
     profit = []    
 
@@ -50,20 +58,50 @@ def knapSack(actions_list):
         cost.append(action[1])
         profit.append(action[2])
 
-    dp = [[0 for i in range(max_inv +1)] for i in range(shares_total + 1)] # Making the dp array
+    dp = [[0 for i in range(max_inv +1)] for i in range(total_action + 1)] # Making the dp array
 
-    for i in range(1, shares_total+1):  # taking first i elements
+    for i in tqdm(range(1, total_action+1)):  # taking first i elements
         for w in range(max_inv, 0, -1):  # starting from back,so that we also have data of
-                                # previous computation when taking i-1 items
+                                   # previous computation when taking i-1 items
             if cost[i-1] <= w:
-                # finding the maximum value
+                # finding the maximum value(profit)
                 dp[i][w] = max(profit[i-1] + dp[i-1][w-cost[i-1]], dp[i-1][w])
             else:
                 dp[i][w] = dp[i-1][w]
+     
 
-      # returning the maximum value of knaps
+    best_combi = []
 
-    
+    while max_inv >= 0 and total_action >= 0:
+
+        if dp[total_action][max_inv] == \
+                dp[total_action-1][max_inv - cost[total_action-1]] + profit[total_action-1]:
+
+            best_combi.append(actions_list[total_action-1])
+            max_inv -= cost[total_action-1]
+
+        total_action -= 1
+
+    return best_combi  # returning the maximum value (profit) combination of knaps
+
+
+def show_cost_profit(best_combi):
+    """Show best cost and prifit combinations result
+    The list of most profitable shares combination - best_combi - as param
+    """
+    print(f"\nMost profitable investments ({len(best_combi)}  shares) :\n")
+
+    cost = []
+    profit = []
+
+    for item in best_combi:
+        print(f"{item[0]} | {item[1] / 100} € | +{item[2]} €")
+        cost.append(item[1] / 100)
+        profit.append(item[2])
+
+    print("\nTotal cost : ", sum(cost), "€")
+    print("Profit after 2 years : +", sum(profit), "€")
+    print("\nTime taken : ", time.time() - start_time, "seconds\n")
 
 if __name__ == "__main__":
     main()

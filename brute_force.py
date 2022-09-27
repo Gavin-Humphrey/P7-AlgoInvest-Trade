@@ -1,5 +1,4 @@
 import csv
-from dataclasses import dataclass 
 from itertools import combinations
 import sys
 from tqdm import tqdm
@@ -24,9 +23,8 @@ except IndexError:
     MAX_INVEST = 500
 
 
-
 def get_actions_objects_from_csv(file_name: str):
-    """Return a list of Action object from a csv file"""
+    """Returns a list of Action object - actions - from a csv file"""
     
     with open(file_name, newline="") as csv_File: 
         actions = []
@@ -42,8 +40,8 @@ def get_all_combi(actions):
     """Set all possible combinations of shares
     Make sure it's within possible max investment
     Iterate and get best profits
-    @param actions: list of all imported shares data
-    @return: most profitable combination (list)
+    list of all imported shares data - actions - as param 
+    returns the list of most profitable combination - best_combi
     """
     actions.sort(key=lambda action: action[2], reverse=True)
     profit = 0
@@ -66,9 +64,9 @@ def get_all_combi(actions):
 
 
 def compute_cost(combi):
-    """Sum of current share combo prices
-    @param combi: list of current shares combi
-    @return: total cost (float)
+    """Sum of current share combination prices
+    list of current shares combination - combi - as param
+    returns total cost 
     """
     costs = []
     for el in combi:
@@ -78,9 +76,9 @@ def compute_cost(combi):
 
 
 def compute_profit(combi):
-    """Gets the sum of the profit of current share combi
-    @param combo: list of current shares combi
-    @return: total profit (float)
+    """Retrieves the sum of the profit of current share combination
+    list of current shares combi - combi - as param
+    returns total profit 
     """
     profits = []
     for el in combi:
@@ -90,8 +88,8 @@ def compute_profit(combi):
 
 
 def show_cost_profit(best_combi):
-    """Display best combination results
-    @param best_combi: most profitable shares combination (list)
+    """Shows the results of best combination 
+    takes most profitable shares combination list - best_combi - as param
     """
     print(f"\nMost profitable investment ({len(best_combi)} shares) :\n")
     print("Action # | Cost €| Profit %")
