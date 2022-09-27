@@ -97,7 +97,7 @@ def show_cost_profit(best_combi):
 
     
     for item in best_combi:
-        print(f"{item[0]} | {item[1]} € | +{item[2]} %")
+        print(f"{item[0]} | {item[1]}  | +{item[2]} ")
         # x = PrettyTable()
 
         # x.field_names = [f"{item[0]} |  {item[1]} € | +{item[2]} %"]

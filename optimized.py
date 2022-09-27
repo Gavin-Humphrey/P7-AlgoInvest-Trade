@@ -11,7 +11,7 @@ MAX_INVEST = 500
 
 def main():
 
-    filename = "data/dataset2.csv"#
+    filename = "data/dataset1.csv"#
     actions_list = read_csv(filename)
     print(f"\nComputing {len(actions_list)} shares for {MAX_INVEST}€ :")
     show_cost_profit(knapSack(actions_list))
@@ -43,7 +43,7 @@ def read_csv(filename):
     
 def knapSack(actions_list):
     """Sort the actions_list
-    Knapsack - Initialize the matrix  - dp
+    Knapsack - Initialize the matrix  - k
     Retrieve the best combination of shares
     actions_list - list of shares - as parameter
     Returns the best possible combinations list
@@ -58,24 +58,26 @@ def knapSack(actions_list):
         cost.append(action[1])
         profit.append(action[2])
 
-    dp = [[0 for i in range(max_inv +1)] for i in range(total_action + 1)] # Making the dp array
+    # Finding the best value (profit)
+    k = [[0 for i in range(max_inv +1)] for i in range(total_action + 1)] # Making the k array
 
     for i in tqdm(range(1, total_action+1)):  # taking first i elements
         for w in range(max_inv, 0, -1):  # starting from back,so that we also have data of
                                    # previous computation when taking i-1 items
             if cost[i-1] <= w:
                 # finding the maximum value(profit)
-                dp[i][w] = max(profit[i-1] + dp[i-1][w-cost[i-1]], dp[i-1][w])
+                k[i][w] = max(profit[i-1] + k[i-1][w-cost[i-1]], k[i-1][w])
             else:
-                dp[i][w] = dp[i-1][w]
+                k[i][w] = k[i-1][w]
      
 
+    #  Getting actions combination from best value (profits)
     best_combi = []
 
     while max_inv >= 0 and total_action >= 0:
 
-        if dp[total_action][max_inv] == \
-                dp[total_action-1][max_inv - cost[total_action-1]] + profit[total_action-1]:
+        if k[total_action][max_inv] == \
+                k[total_action-1][max_inv - cost[total_action-1]] + profit[total_action-1]:
 
             best_combi.append(actions_list[total_action-1])
             max_inv -= cost[total_action-1]
