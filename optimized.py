@@ -59,10 +59,10 @@ def knapSack(actions_list):
         profit.append(action[2])
 
     # Finding the best value (profit)
-    k = [[0 for i in range(max_inv +1)] for i in range(total_action + 1)] # Making the k array
+    k = [[0 for x in range(max_inv +1)] for x in range(total_action + 1)] # Making the k array
 
     for i in tqdm(range(1, total_action+1)):  # taking first i elements
-        for w in range(max_inv, 0, -1):  # starting from back,so that we also have data of
+        for w in range(1, max_inv + 1):  
                                    # previous computation when taking i-1 items
             if cost[i-1] <= w:
                 # finding the maximum value(profit)
