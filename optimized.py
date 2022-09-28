@@ -1,4 +1,3 @@
-import sys
 import csv
 from tqdm import tqdm
 import time
