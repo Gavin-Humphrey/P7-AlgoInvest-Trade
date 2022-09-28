@@ -47,6 +47,9 @@ def knapSack(actions_list):
     Retrieve the best combination of shares
     actions_list - list of shares - as parameter
     Returns the best possible combinations list
+    max_inv = capacity
+    cost = weights
+    profit = values
     """
     actions_list.sort(key=lambda action: action[2], reverse=False)
     max_inv = MAX_INVEST * 100   
@@ -63,10 +66,8 @@ def knapSack(actions_list):
 
     for i in tqdm(range(1, total_action+1)):  # taking first i elements
         for w in range(1, max_inv + 1):  
-                                   # previous computation when taking i-1 items
-            if cost[i-1] <= w:
-                # finding the maximum value(profit)
-                k[i][w] = max(profit[i-1] + k[i-1][w-cost[i-1]], k[i-1][w])
+            if cost[i-1] <= w:    
+                k[i][w] = max(profit[i-1] + k[i-1][w-cost[i-1]], k[i-1][w]) # finding the maximum value(profit)
             else:
                 k[i][w] = k[i-1][w]
      
