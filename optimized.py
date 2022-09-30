@@ -10,12 +10,11 @@ start_time = time.time()
 
 @dataclass(frozen=True)
 class Action:
-    """Represents a action"""
+    """Represents an action"""
     name: str
     cost: float
     percent: float
     
-
     @property
     def profit(self) -> float:
         """Compute a return profit from cost and percent"""
@@ -27,6 +26,7 @@ class Action:
     def __lt__(self, other_action: "Action"):
         """Allows to sort list of Action on percent profit"""
         return self.percent < other_action.percent
+        
 
 def get_actions_objects_from_csv(file_name: str) -> list[Action]:
     """Return a list of Action object from a csv file"""
@@ -45,8 +45,7 @@ def get_actions_objects_from_csv(file_name: str) -> list[Action]:
     return actions
 
 
-
-def best_cost_pro(actions: list[Action]):
+def best_cost_profit(actions: list[Action]):
     """Returns the best actions with total invest and total profit"""
     actions.sort(reverse=True)
     max_invest = 500
@@ -67,7 +66,7 @@ def best_cost_pro(actions: list[Action]):
 def main():
 
     actions = get_actions_objects_from_csv("data/dataset1.csv")
-    best_actions, invest, profit = best_cost_pro(actions)
+    best_actions, invest, profit = best_cost_profit(actions)
     print("")
     print(f"Computed {len(actions)} Shares")
     print("")

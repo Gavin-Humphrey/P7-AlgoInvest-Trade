@@ -10,7 +10,7 @@ from prettytable import PrettyTable
 begin_time = time.time()
 
 def main():
-    actions_list = get_actions_objects_from_csv("data/action.csv")
+    actions_list = get_actions_from_csv("data/action.csv")
     print(f"\nComputing {len(actions_list)} shares for {MAX_INVEST}€ :")
 
     best_combi = get_all_combi(actions_list)
@@ -23,7 +23,7 @@ except IndexError:
     MAX_INVEST = 500
 
 
-def get_actions_objects_from_csv(file_name: str):
+def get_actions_from_csv(file_name: str):
     """Returns a list of Action object - actions - from a csv file"""
     
     with open(file_name, newline="") as csv_File: 
