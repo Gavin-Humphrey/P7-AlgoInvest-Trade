@@ -3,7 +3,6 @@ from itertools import combinations
 import sys
 from tqdm import tqdm
 import time
-from prettytable import PrettyTable
 
 
 
@@ -92,17 +91,11 @@ def show_cost_profit(best_combi):
     takes most profitable shares combination list - best_combi - as param
     """
     print(f"\nMost profitable investment ({len(best_combi)} shares) :\n")
-    print("Action # | Cost €| Profit %")
-    print("__________________________")
+  
 
-    
     for item in best_combi:
-        print(f"{item[0]} | {item[1]}  | +{item[2]} ")
-        # x = PrettyTable()
-
-        # x.field_names = [f"{item[0]} |  {item[1]} € | +{item[2]} %"]
-        # print(x)
-
+        print(f"{item[0]} | {item[1]} € | +{item[2]} %")
+        
     print("\nInvestment cost: ", compute_cost(best_combi), "€")
     print("Profit after 2 years: +",compute_profit(best_combi), "€")
     print("\nTime taken :", time.time()- begin_time, "seconds")
