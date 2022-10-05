@@ -26,8 +26,20 @@ class Action:
     def __lt__(self, other_action: "Action"):
         """Allows to sort list of Action on percent profit"""
         return self.percent < other_action.percent
-        
 
+def performance(func):
+    """Monitor process time for a function"""
+
+    def wrapper(*args, **kawrgs):
+        t1 = perf_counter()
+        result = func(*args, **kawrgs)
+        t2 = perf_counter()
+        print(f"\nThe function {func.__name__} took {round(t2 - t1, 5)} s")
+        return result
+
+    return wrapper
+
+@performance
 def get_actions_objects_from_csv(file_name: str) -> list[Action]:
     """Return a list of Action object from a csv file"""
     actions = []
@@ -44,7 +56,7 @@ def get_actions_objects_from_csv(file_name: str) -> list[Action]:
 
     return actions
 
-
+@performance
 def best_cost_profit(actions: list[Action]):
     """Returns the best actions with total invest and total profit"""
     actions.sort(reverse=True)
