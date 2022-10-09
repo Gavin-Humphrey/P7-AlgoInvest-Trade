@@ -26,6 +26,7 @@ class Action:
     def __lt__(self, other_action: "Action"):
         """Allows to sort list of Action on percent profit"""
         return self.percent < other_action.percent
+        
 
 def performance(func):
     """Monitor process time for a function"""
@@ -77,7 +78,7 @@ def best_cost_profit(actions: list[Action]):
 
 def main():
 
-    actions = get_actions_objects_from_csv("data/dataset1.csv")
+    actions = get_actions_objects_from_csv("data/dataset2.csv")
     best_actions, invest, profit = best_cost_profit(actions)
     print("")
     print(f"Computed {len(actions)} Shares")

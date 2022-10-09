@@ -2,7 +2,6 @@ import csv
 from tqdm import tqdm
 import time
 from time import perf_counter
-from memory_profiler import prpfiler
 
 
 
@@ -16,6 +15,19 @@ def main():
     actions_list = read_csv(filename)
     print(f"\nComputing {len(actions_list)} shares for {MAX_INVEST}€ :")
     show_cost_profit(knapSack(actions_list))
+
+
+def performance(func):
+    """Monitor process time for a function"""
+
+    def wrapper(*args, **kawrgs):
+        t1 = perf_counter()
+        result = func(*args, **kawrgs)
+        t2 = perf_counter()
+        print(f"\nThe function {func.__name__} took {round(t2 - t1, 5)} s")
+        return result
+
+    return wrapper
   
 
 def read_csv(filename):
@@ -41,7 +53,8 @@ def read_csv(filename):
 
         return actions_list
 
-    
+
+@performance 
 def knapSack(actions_list):
     """Sort the actions_list
     Knapsack - Initialize the matrix  - k
